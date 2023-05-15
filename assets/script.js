@@ -1,5 +1,5 @@
 const WEATHER_API_BASE_URL = 'https://api.openweathermap.org';
-const WEATHER_API_KEY = 'f23ee9deb4e1a7450f3157c44ed020e1';
+const WEATHER_API_KEY = '4b1a5523b5977bf435f0ee1ea815249c';
 const MAX_DAILY_FORECAST = 5;
 
 // create an array of searched locations
@@ -37,3 +37,15 @@ const lookupLocation = (search) => {
 
 
 // Add an event handler for the search button
+
+
+document.getElementById("weatherSearch").onclick = function() {
+    console.log("button pushed");
+        var search = document.getElementById("search-input").value;
+        console.log("search term: " + search);
+
+        lookupLocation(search);
+
+
+
+    }
