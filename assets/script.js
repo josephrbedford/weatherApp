@@ -2,6 +2,8 @@ const WEATHER_API_BASE_URL = 'https://api.openweathermap.org';
 const WEATHER_API_KEY = '4b1a5523b5977bf435f0ee1ea815249c';
 const MAX_DAILY_FORECAST = 5;
 
+const dayObject = {};
+
 // create an array of searched locations
 
 const lookupLocation = (search) => {
@@ -23,34 +25,51 @@ const lookupLocation = (search) => {
         
 
             // Get the Weather for the cached location
-           
+
+            var apiCurrent = `${WEATHER_API_BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&cnt=5&units=metric`;
+            fetch(apiCurrent)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    var current = document.querySelector('#current');
+                    var htmlContent
+                    
+                });
+
+
             var apiUrl = `${WEATHER_API_BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&cnt=5&units=metric`;
             console.log("From API: " + apiUrl);
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log(data);
+                    // console.log(data);
 
                     // Display the Current Weather
 
                     // Display the 5 Day Forecast
-                    var dayObject = {};
+                    
                         for (i = 0; i < 5; i++) {
                             var variableName = "day" + i;
                             dayObject[variableName] = data.list[i];
-                        };
+                       
 
-                    console.log(dayObject);
+                    // console.log(dayObject);
 
-                    //for (i = 0; i < 5; i++) {
-                        var html = `<div class="card"> 
-                                    temp:${dayObject.day0.main.temp}`
+                    
+                        var container = document.querySelector('#container');
+                        var newElement = document.createElement('div');
                         
-                        $('.container').append(html);
+                        var htmlContent = `<div class = "card"><p>${dayObject['day' + i].dt_txt}</p>`;
+                        htmlContent += `<p>Temperature: ${dayObject['day' + i].main.temp}°c</p>`;
+                        htmlContent += `<p>Humidity: ${dayObject['day' + i].main.humidity}%</p>`;
+                        htmlContent += `<p>Windspeed: ${dayObject['day' + i].wind.speed} kph</p></div>`;
 
-                    
-                    
+                        container.innerHTML += htmlContent;
+                    };
+
+                                          
                     });
 
                 });
@@ -86,7 +105,5 @@ document.getElementById("weatherSearch").onclick = function() {
         console.log("search term: " + search);
 
         lookupLocation(search);
-
-
-
+        // console.log("Object test: " + dayObject);
     }
