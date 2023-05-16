@@ -19,9 +19,13 @@ const lookupLocation = (search) => {
             var lat = data[0].lat;
             var lon = data[0].lon;
 
+            console.log("Latitude: " + lat + ", Longitude: "+ lon);
+        
+
             // Get the Weather for the cached location
-            var apiUrl = `${WEATHER_API_BASE_URL}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${WEATHER_API_KEY}`;
-            console.log(apiUrl);
+           
+            var apiUrl = `${WEATHER_API_BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&cnt=5&units=metric`;
+            console.log("From API: " + apiUrl);
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -31,9 +35,46 @@ const lookupLocation = (search) => {
                     // Display the Current Weather
 
                     // Display the 5 Day Forecast
+                    var dayObject = {};
+                        for (i = 0; i < 5; i++) {
+                            var variableName = "day" + i;
+                            dayObject[variableName] = data.list[i];
+                        };
+
+                    console.log(dayObject);
+
+                    //for (i = 0; i < 5; i++) {
+                        var html = `<div class="card"> 
+                                    temp:${dayObject.day0.main.temp}`
+                        
+                        $('.container').append(html);
+
+                    
+                    
+                    });
+
                 });
-        });
-}
+            
+        }
+                    /*    var day[i] = data.list[i];
+                        console.log(JSON.stringify(day[i]));
+                    }
+                     var fiveDays = JSON.parse(data);
+                        console.log(fiveDays);
+                    //for day in data['list'];
+                     for (i = 0; i <= 5; day++) {
+                        var day = "day" + i;
+                    data.list[i].main.temp;
+                        console.log("Day: " + dayTemp(i));
+                    }
+*/
+
+
+
+                    //    console.log("Date: "+ date);
+
+
+
 
 
 // Add an event handler for the search button
