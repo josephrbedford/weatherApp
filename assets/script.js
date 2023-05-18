@@ -17,6 +17,7 @@ function handleSearchButtonClick() {
     const itemText = inputBox.value.trim();
     if (itemText) {
       addItem(itemText);
+      saveItemToLocalStorage(itemText);
       inputBox.value = '';
     }
   }
@@ -27,6 +28,7 @@ function handleKeyDown(event) {
       const itemText = inputBox.value.trim();
       if (itemText) {
         addItem(itemText);
+        saveItemToLocalStorage(itemText);
         inputBox.value = '';
       }
     }
@@ -43,6 +45,55 @@ function addItem(itemText) {
 
     itemList.appendChild(listItem);
   }
+
+  // Function to add a place to the dynamically generated list
+function addPlace(placeName) {
+  const listItem = document.createElement('li');
+  listItem.textContent = placeName;
+
+  // ... (Other code to handle the list item)
+
+  itemList.appendChild(listItem);
+}
+
+
+  function saveItemToLocalStorage(placeName) {
+    // Check if local storage is supported by the browser
+    if (typeof(Storage) !== "undefined") {
+      // Retrieve the existing places from local storage
+      const existingPlaces = localStorage.getItem('places');
+  
+      // Parse the existing places as an array or create an empty array if no places exist
+      const placesArray = existingPlaces ? JSON.parse(existingPlaces) : [];
+  
+      // Add the new place to the array
+      placesArray.push(placeName);
+  
+      // Convert the array back to a string and store it in local storage
+      localStorage.setItem('places', JSON.stringify(placesArray));
+    }
+  }
+
+  // Function to load places from local storage and populate the list
+function loadPlacesFromLocalStorage() {
+  const places = localStorage.getItem('places');
+  if (places) {
+    const parsedPlaces = JSON.parse(places);
+    parsedPlaces.forEach((place) => {
+      addItem(place);
+    });
+  }
+}
+
+// Function to add a place to the dynamically generated list
+function addPlace(placeName) {
+  const listItem = document.createElement('li');
+  listItem.textContent = placeName;
+
+  // ... (Other code to handle the list item)
+
+  itemList.appendChild(listItem);
+}
 
 // Handle click on sidebar item
   function handleClick(itemText) {
@@ -140,6 +191,10 @@ function lookupLocation(search) {
           
 
         // event handlers for button and searchbox
+        
         searchButton.addEventListener('click', handleSearchButtonClick);
         inputBox.addEventListener('keydown', handleKeyDown);
+
+        // Call loadPlacesFromLocalStorage when the page loads
+        window.addEventListener('DOMContentLoaded', loadPlacesFromLocalStorage);
         
