@@ -46,17 +46,6 @@ function addItem(itemText) {
     itemList.appendChild(listItem);
   }
 
-  // Function to add a place to the dynamically generated list
-function addPlace(placeName) {
-  const listItem = document.createElement('li');
-  listItem.textContent = placeName;
-
-  // ... (Other code to handle the list item)
-
-  itemList.appendChild(listItem);
-}
-
-
   function saveItemToLocalStorage(placeName) {
     // Check if local storage is supported by the browser
     if (typeof(Storage) !== "undefined") {
@@ -83,16 +72,6 @@ function loadPlacesFromLocalStorage() {
       addItem(place);
     });
   }
-}
-
-// Function to add a place to the dynamically generated list
-function addPlace(placeName) {
-  const listItem = document.createElement('li');
-  listItem.textContent = placeName;
-
-  // ... (Other code to handle the list item)
-
-  itemList.appendChild(listItem);
 }
 
 // Handle click on sidebar item
@@ -161,13 +140,13 @@ function lookupLocation(search) {
 
                      //console.log(data);
 
-                    // iterate over the 5 items to                     
+                    // iterate over the 5 items to fill html                    
                         for (i = 0; i < 5; i++) {
                             // var variableName = "day" + i;
                             dayObject[i] = data.list[i];                        // load iterations (days) weather into dayObject (day)
                        
                             weatherIconCode = dayObject[i].weather[0].icon;     // get weather icon code for (day)
-                    // console.log(dayObject);
+                    
 
                     
                         var container = document.querySelector('#container');   // container id on webpage for display of container variable
