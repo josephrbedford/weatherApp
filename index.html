@@ -8,27 +8,32 @@
   
   <title>Weather Dashboard</title>
   <link rel="stylesheet" href="./assets/css/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
 </head>
+
 <body>
   <header>
     <h1>Weather Dashboard</h1>
   </header>
+
+  <main>
+
+  <!-- Sidebar for searchbox and list of places -->
   <div class="sidebar">
-    <input type="text" id="inputBox" placeholder="Type a location"/>
+    
+  
+    <input type="text" id="inputBox">
     <button id="searchButton">Search</button>
     <ul id="itemList"></ul>
   </div>
 
-  
+  <!-- Area for weather cards -->
   <div class="card-area">
-    <div id="current"></div>
-    <div id="container"></div>
+    <div id="current"></div> <!-- Card for current conditions -->
+    <div id="container"></div> <!-- Card for forecast -->
+  </div>
     
   
   <script src="./assets/script.js"></script>
 </body>
 </html>
-
-
+</main>
