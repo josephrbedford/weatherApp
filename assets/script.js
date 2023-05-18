@@ -112,19 +112,20 @@ function lookupLocation(search) {
                     
                         for (i = 0; i < 5; i++) {
                             var variableName = "day" + i;
-                            dayObject[variableName] = data.list[i];
+                            dayObject[i] = data.list[i];
                        
-
+                            weatherIconCode = dayObject[i].weather[0].icon;
                     // console.log(dayObject);
 
                     
                         var container = document.querySelector('#container');
                         // var newElement = document.createElement('div');
                         
-                        var htmlContent = `<div class = "card"><p>${dayObject['day' + i].dt_txt}</p>`;
-                        htmlContent += `<p>Temperature: ${dayObject['day' + i].main.temp}°c</p>`;
-                        htmlContent += `<p>Humidity: ${dayObject['day' + i].main.humidity}%</p>`;
-                        htmlContent += `<p>Windspeed: ${dayObject['day' + i].wind.speed} kph</p></div>`;
+                        var htmlContent = `<div class = "card"><p>${dayObject[i].dt_txt}</p>`;
+                        htmlContent += `<img src = "http://openweathermap.org/img/wn/${weatherIconCode}.png" width="50" height="50">`;
+                        htmlContent += `<p>Temperature: ${dayObject[i].main.temp}°c</p>`;
+                        htmlContent += `<p>Humidity: ${dayObject[i].main.humidity}%</p>`;
+                        htmlContent += `<p>Windspeed: ${dayObject[i].wind.speed} kph</p></div>`;
 
                         container.innerHTML += htmlContent;
                     };
