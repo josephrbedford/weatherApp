@@ -30,3 +30,31 @@ header {
 .card h2 {
   display: none;
 }
+
+/* Remove bullet point from list */
+#itemList {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style list item */
+#itemList li {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+/* Style list item on hover */
+#itemList li:hover {
+  background-color: black;
+  color: white;
+}
+
+/* Style list item when clicked */
+#itemList li:active,
+#itemList li.selected {
+  background-color: black;
+  color: white;
+}

@@ -2,13 +2,59 @@ const WEATHER_API_BASE_URL = 'https://api.openweathermap.org';
 const WEATHER_API_KEY = '4b1a5523b5977bf435f0ee1ea815249c';
 const MAX_DAILY_FORECAST = 5;
 
-const dayObject = {};
 
-// create an array of searched locations
+var dayObject = {};
+var currentObject = {};
+// var iconImg.src = iconUrl;
 
-const lookupLocation = (search) => {
+const inputBox = document.getElementById('inputBox');
+const searchButton = document.getElementById('searchButton')
+const itemList = document.getElementById('itemList');
 
-    // Lookup the location to get the Lat/Lon
+searchButton.addEventListener('click', handleSearchButtonClick);
+inputBox.addEventListener('keydown', handleKeyDown);
+
+
+
+function handleSearchButtonClick() {
+    const itemText = inputBox.value.trim();
+    if (itemText) {
+      addItem(itemText);
+      inputBox.value = '';
+    }
+  }
+
+function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      const itemText = inputBox.value.trim();
+      if (itemText) {
+        addItem(itemText);
+        inputBox.value = '';
+      }
+    }
+  }
+
+function addItem(itemText) {
+    const listItem = document.createElement('li');
+    listItem.textContent = itemText;
+
+    listItem.addEventListener('click', () => {
+      handleClick(itemText);
+    });
+
+    itemList.appendChild(listItem);
+  }
+
+  function handleClick(itemText) {
+    console.log('Clicked:', itemText);
+    
+    lookupLocation(itemText);
+  }
+
+function lookupLocation(search) {
+    current.innerHTML = '';
+    container.innerHTML = '';
+  // Lookup the location to get the Lat/Lon
     var apiUrl = `${WEATHER_API_BASE_URL}/geo/1.0/direct?q=${search}&limit=5&appid=${WEATHER_API_KEY}`;
     fetch(apiUrl)
         .then(response => response.json())
@@ -32,8 +78,22 @@ const lookupLocation = (search) => {
                 .then(data => {
                     console.log(data);
 
+                    currentObject = data;
+                    
+                    weatherIconCode = currentObject.weather[0].icon;
+
+                    console.log("weatherIcon: " + weatherIconCode);
+
                     var current = document.querySelector('#current');
-                    var htmlContent
+                    // var newElement = document.createElement('div');
+
+                    var html2Content = `<div class = "card"><p>Current conditions in ${search}</p>`;
+                        html2Content += `<img src = "http://openweathermap.org/img/wn/${weatherIconCode}.png" width="100" height="100"></p>`;
+                        html2Content += `<p>Temperature: ${currentObject.main.temp}°c</p>`;
+                        html2Content += `<p>Humidity: ${currentObject.main.humidity}%</p>`;
+                        html2Content += `<p>Windspeed: ${currentObject.wind.speed} kph</p></div>?`;
+
+                        current.innerHTML += html2Content;
                     
                 });
 
@@ -44,7 +104,7 @@ const lookupLocation = (search) => {
                 .then(response => response.json())
                 .then(data => {
 
-                    // console.log(data);
+                     console.log(data);
 
                     // Display the Current Weather
 
@@ -59,7 +119,7 @@ const lookupLocation = (search) => {
 
                     
                         var container = document.querySelector('#container');
-                        var newElement = document.createElement('div');
+                        // var newElement = document.createElement('div');
                         
                         var htmlContent = `<div class = "card"><p>${dayObject['day' + i].dt_txt}</p>`;
                         htmlContent += `<p>Temperature: ${dayObject['day' + i].main.temp}°c</p>`;
@@ -75,35 +135,4 @@ const lookupLocation = (search) => {
                 });
             
         }
-                    /*    var day[i] = data.list[i];
-                        console.log(JSON.stringify(day[i]));
-                    }
-                     var fiveDays = JSON.parse(data);
-                        console.log(fiveDays);
-                    //for day in data['list'];
-                     for (i = 0; i <= 5; day++) {
-                        var day = "day" + i;
-                    data.list[i].main.temp;
-                        console.log("Day: " + dayTemp(i));
-                    }
-*/
-
-
-
-                    //    console.log("Date: "+ date);
-
-
-
-
-
-// Add an event handler for the search button
-
-
-document.getElementById("weatherSearch").onclick = function() {
-    console.log("button pushed");
-        var search = document.getElementById("search-input").value;
-        console.log("search term: " + search);
-
-        lookupLocation(search);
-        // console.log("Object test: " + dayObject);
-    }
+          
