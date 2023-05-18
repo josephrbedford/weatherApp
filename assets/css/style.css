@@ -1,13 +1,8 @@
-
-
 header {
   background-color: #ccc;
   padding: 10px;
 }
 
-body {
- 
-}
 #container {
   display: flex;
   flex-wrap: wrap;
