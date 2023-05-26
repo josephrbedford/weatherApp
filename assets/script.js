@@ -44,6 +44,7 @@ function addItem(itemText) {
     });
 
     itemList.appendChild(listItem);
+    
   }
 
   function saveItemToLocalStorage(placeName) {
@@ -60,6 +61,7 @@ function addItem(itemText) {
   
       // Convert the array back to a string and store it in local storage
       localStorage.setItem('places', JSON.stringify(placesArray));
+      lookupLocation(placeName);
     }
   }
 
@@ -79,6 +81,14 @@ function loadPlacesFromLocalStorage() {
     console.log('Clicked:', itemText);
     
     lookupLocation(itemText);
+  }
+
+  function filterArray(list) {
+    return list.filter(item => {
+      // Check if the timestamp is 12:00:00
+      const timestamp = new Date(item.dt_txt);
+      return timestamp.getHours() === 12 && timestamp.getMinutes() === 0 && timestamp.getSeconds() === 0;
+    });
   }
 
 // Look up location
@@ -108,7 +118,7 @@ function lookupLocation(search) {
             fetch(apiCurrent)
                 .then(response => response.json())
                 .then(data => {
-                    // console.log(data);
+                    console.log(data);
 
                     currentObject = data;                                      // JSON data > currentObject object
                     
@@ -122,6 +132,7 @@ function lookupLocation(search) {
 
                     // create html string to display current weather
                     var html2Content = `<div class = "card"><p><b>Current conditions in ${search}</b></p>`;
+                        html2Content += `<p>on ${currentObject.dt}</p>`;
                         html2Content += `<img src = "http://openweathermap.org/img/wn/${weatherIconCode}.png" width="100" height="100"></p>`;
                         html2Content += `<p>Temperature: ${currentObject.main.temp}°c</p>`;
                         html2Content += `<p>Humidity: ${currentObject.main.humidity}%</p>`;
@@ -132,20 +143,23 @@ function lookupLocation(search) {
                 });
 
             // Get forecast weather
-            var apiUrl = `${WEATHER_API_BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&cnt=5&units=metric`;
+            var apiUrl = `${WEATHER_API_BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&cnt=60&units=metric`;
             console.log("From API: " + apiUrl);
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
 
-                     //console.log(data);
+                     // console.log(data);
+
+                     const filteredList = filterArray(data.list);
+                      // console.log(filteredList);      
 
                     // iterate over the 5 items to fill html                    
-                        for (i = 0; i < 5; i++) {
+                        for (i = 0; i <= 5; i++) {
                             // var variableName = "day" + i;
-                            dayObject[i] = data.list[i];                        // load iterations (days) weather into dayObject (day)
+                            dayObject[i] = filteredList[i];                        // load iterations (days) weather into dayObject (day)
                        
-                            weatherIconCode = dayObject[i].weather[0].icon;     // get weather icon code for (day)
+                           weatherIconCode = dayObject[i].weather[0].icon;     // get weather icon code for (day)
                     
 
                     
