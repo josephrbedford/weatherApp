@@ -7,6 +7,7 @@ const inputBox = document.getElementById('inputBox');
 const searchButton = document.getElementById('searchButton')
 const itemList = document.getElementById('itemList');
 
+
 // Global Variables
 
 var dayObject = {};
@@ -91,6 +92,16 @@ function loadPlacesFromLocalStorage() {
     });
   }
 
+  function formatUnixTime(unixTime) {
+    // Create a Day.js object from the Unix timestamp
+    const date = dayjs.unix(unixTime);
+  
+    // Format the date and time
+    const formattedDate = date.format('YYYY:MM:DD HH:mm');
+  
+    return formattedDate;
+  }
+
 // Look up location
 function lookupLocation(search) {
     // Clear divs for new weather info
@@ -128,11 +139,12 @@ function lookupLocation(search) {
 
                     var current = document.querySelector('#current');           // select current ID in html for current var to display info
                     // var newElement = document.createElement('div');
-
+                    
+                    var currentTime = formatUnixTime(currentObject.dt);
 
                     // create html string to display current weather
                     var html2Content = `<div class = "card"><p><b>Current conditions in ${search}</b></p>`;
-                        html2Content += `<p>on ${currentObject.dt}</p>`;
+                        html2Content += `<p><b>on ${currentTime}<b></p>`;
                         html2Content += `<img src = "http://openweathermap.org/img/wn/${weatherIconCode}.png" width="100" height="100"></p>`;
                         html2Content += `<p>Temperature: ${currentObject.main.temp}°c</p>`;
                         html2Content += `<p>Humidity: ${currentObject.main.humidity}%</p>`;
